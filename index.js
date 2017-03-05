@@ -25,12 +25,12 @@ elixir.extend('bower', function (options) {
         css: {
             minify : true,
             file: 'vendor.css',
-            output: config.cssOutput ? config.publicPath + '/' + config.cssOutput : config.publicPath + '/css'
+            output: config.css.outputFolder ? config.publicPath + '/' + config.css.outputFolder : config.publicPath + '/css'
         },
         js: {
             uglify : true,
             file: 'vendor.js',
-            output: config.jsOutput ? config.publicPath + '/' + config.jsOutput : config.publicPath + '/js'
+            output: config.js.outputFolder ? config.publicPath + '/' + config.js.outputFolder : config.publicPath + '/js'
         },
         font: {
             output: (config.font && config.font.outputFolder) ? config.publicPath + '/' + config.font.outputFolder : config.publicPath + '/fonts'
@@ -49,7 +49,7 @@ elixir.extend('bower', function (options) {
     if(options.font !== false) files.push('bower-fonts');
     if(options.img  !== false) files.push('bower-imgs');
 
-    gulp.task('bower', function () {
+    new task('bower', function () {
         return gulp.start(files);
     });
 
@@ -70,7 +70,7 @@ elixir.extend('bower', function (options) {
             .pipe(filter('**/*.css'))
             .pipe(test(options.img.maxInlineSize > 0, base64({
                 extensions: options.img.extInline,
-                maxImageSize: options.img.maxInlineSize, // bytes 
+                maxImageSize: options.img.maxInlineSize, // bytes
                 debug: options.debugging,
             })))
             .pipe(concat(options.css.file))
